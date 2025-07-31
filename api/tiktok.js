@@ -35,18 +35,16 @@ const handler = async (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-  // ✅ OPTIONS request (preflight)
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // 🔐 Token check
+  // 🔐 Token
   if (!token || token !== secretToken) {
     console.warn('⛔ Bị chặn: sai token:', token);
     return res.status(403).json({ error: 'Forbidden - Invalid token' });
   }
 
-  // ✅ Chỉ cho phép POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -61,17 +59,18 @@ const handler = async (req, res) => {
     const response = await axios.get('https://tiktok-video-downloader-api.p.rapidapi.com/media', {
       params: { videoUrl: finalUrl },
       headers: {
-        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
-        'x-rapidapi-host': process.env.RAPIDAPI_HOST || 'tiktok-video-downloader-api.p.rapidapi.com'
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'tiktok-video-downloader-api.p.rapidapi.com'
       }
     });
 
     const data = response.data?.data || {};
-    const video = data?.play || '';
-    const videoHD = data?.hdplay || '';
-    const audio = data?.music || '';
+    const videoHD = data.hdplay;
+    const videoSD = data.play;
+    const videoWM = data.wmplay;
+    const audio = data.music;
 
-    if (!video && !videoHD && !audio) {
+    if (!videoHD && !videoSD && !videoWM && !audio) {
       return res.status(200).json({
         code: 2,
         message: "❌ Không lấy được video",
@@ -82,7 +81,7 @@ const handler = async (req, res) => {
     return res.status(200).json({
       code: 0,
       data: [
-        ...(video ? [{ url: video, label: "Tải không có watermark" }] : []),
+        ...(videoSD ? [{ url: videoSD, label: "Tải không watermark" }] : []),
         ...(videoHD ? [{ url: videoHD, label: "Tải HD" }] : []),
         ...(audio ? [{ url: audio, label: "Tải nhạc" }] : [])
       ],
@@ -93,7 +92,7 @@ const handler = async (req, res) => {
       }
     });
   } catch (err) {
-    console.error("❌ Lỗi gọi API mới:", err.response?.data || err.message);
+    console.error("❌ Lỗi gọi API:", err.response?.data || err.message);
     return res.status(500).json({
       code: 500,
       message: "Lỗi server khi gọi RapidAPI",
@@ -103,4 +102,5 @@ const handler = async (req, res) => {
 };
 
 export default handler;
+
 
