@@ -17,14 +17,14 @@ const followRedirect = async (shortUrl) => {
 };
 
 const handler = async (req, res) => {
-  const allowedOrigins = ['https://snapth.vercel.app', 'https://snapth.art'];
+  const allowedOrigin = 'https://snapth.verchttps://www.snapth.art.';
   const secretToken = process.env.API_SECRET_TOKEN; // Đặt trong .env
   const origin = req.headers.origin || req.headers.referer || '';
   const authHeader = req.headers.authorization || '';
   const token = authHeader.replace('Bearer ', '').trim();
 
   // ✅ CORS
-  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
   res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -35,10 +35,10 @@ const handler = async (req, res) => {
   }
 
   // 🔐 Kiểm tra domain gọi API
-if (!allowedOrigins.some(o => origin.startsWith(o))) {
-  console.warn('⛔ Bị chặn: sai domain:', origin);
-  return res.status(403).json({ error: 'Forbidden - Invalid origin' });
-}
+  if (!origin.startsWith(allowedOrigin)) {
+    console.warn('⛔ Bị chặn: sai domain:', origin);
+    return res.status(403).json({ error: 'Forbidden - Invalid origin' });
+  }
 
   // 🔐 Kiểm tra token
   if (token !== secretToken) {
