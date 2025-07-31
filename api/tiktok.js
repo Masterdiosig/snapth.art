@@ -24,7 +24,7 @@ const handler = async (req, res) => {
   const token = authHeader.replace('Bearer ', '').trim();
 
   // ✅ CORS
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -35,10 +35,10 @@ const handler = async (req, res) => {
   }
 
   // 🔐 Kiểm tra domain gọi API
-  if (!origin.startsWith(allowedOrigin)) {
-    console.warn('⛔ Bị chặn: sai domain:', origin);
-    return res.status(403).json({ error: 'Forbidden - Invalid origin' });
-  }
+if (!allowedOrigins.some(o => origin.startsWith(o))) {
+  console.warn('⛔ Bị chặn: sai domain:', origin);
+  return res.status(403).json({ error: 'Forbidden - Invalid origin' });
+}
 
   // 🔐 Kiểm tra token
   if (token !== secretToken) {
