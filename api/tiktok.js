@@ -17,14 +17,20 @@ const followRedirect = async (shortUrl) => {
 };
 
 const handler = async (req, res) => {
-  const allowedOrigin = 'https://snapth.verchttps://www.snapth.art.';
-  const secretToken = process.env.API_SECRET_TOKEN; // Đặt trong .env
+  const allowedOrigins = ['https://snapth.vercel.app', 'https://snapth.art'];
+  const secretToken = process.env.API_SECRET_TOKEN;
   const origin = req.headers.origin || req.headers.referer || '';
   const authHeader = req.headers.authorization || '';
   const token = authHeader.replace('Bearer ', '').trim();
 
   // ✅ CORS
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+  if (allowedOrigins.some(o => origin.startsWith(o))) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  } else {
+    console.warn('⛔ Bị chặn: sai domain:', origin);
+    return res.status(403).json({ error: 'Forbidden - Invalid origin' });
+  }
+
   res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -34,14 +40,8 @@ const handler = async (req, res) => {
     return res.status(200).end();
   }
 
-  // 🔐 Kiểm tra domain gọi API
-  if (!origin.startsWith(allowedOrigin)) {
-    console.warn('⛔ Bị chặn: sai domain:', origin);
-    return res.status(403).json({ error: 'Forbidden - Invalid origin' });
-  }
-
-  // 🔐 Kiểm tra token
-  if (token !== secretToken) {
+  // 🔐 Token check
+  if (!token || token !== secretToken) {
     console.warn('⛔ Bị chặn: sai token:', token);
     return res.status(403).json({ error: 'Forbidden - Invalid token' });
   }
@@ -58,24 +58,20 @@ const handler = async (req, res) => {
   console.log("🔗 Final TikTok URL:", finalUrl);
 
   try {
-    const response = await axios.get("https://tiktok-download-video1.p.rapidapi.com/getVideo", {
-      params: {
-        url: finalUrl,
-        hd: '1'
-      },
+    const response = await axios.get('https://tiktok-video-downloader-api.p.rapidapi.com/media', {
+      params: { videoUrl: finalUrl },
       headers: {
-        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "tiktok-download-video1.p.rapidapi.com"
+        'x-rapidapi-key': process.env.RAPIDAPI_KEY,
+        'x-rapidapi-host': process.env.RAPIDAPI_HOST || 'tiktok-video-downloader-api.p.rapidapi.com'
       }
     });
 
     const data = response.data?.data || {};
-    const videoHD = data.hdplay;
-    const videoSD = data.play;
-    const videoWM = data.wmplay;
-    const audio = data.music;
+    const video = data?.play || '';
+    const videoHD = data?.hdplay || '';
+    const audio = data?.music || '';
 
-    if (!videoHD && !videoSD && !videoWM && !audio) {
+    if (!video && !videoHD && !audio) {
       return res.status(200).json({
         code: 2,
         message: "❌ Không lấy được video",
@@ -86,23 +82,25 @@ const handler = async (req, res) => {
     return res.status(200).json({
       code: 0,
       data: [
-        ...(videoSD ? [{ url: videoSD, label: "Tải không có watermark" }] : []),
+        ...(video ? [{ url: video, label: "Tải không có watermark" }] : []),
         ...(videoHD ? [{ url: videoHD, label: "Tải HD" }] : []),
         ...(audio ? [{ url: audio, label: "Tải nhạc" }] : [])
       ],
       meta: {
         thumbnail: data.cover,
         description: data.title,
-        author: data.author?.nickname || data.author?.unique_id || ""
+        author: data.author?.nickname || data.author?.unique_id || ''
       }
     });
   } catch (err) {
+    console.error("❌ Lỗi gọi API mới:", err.response?.data || err.message);
     return res.status(500).json({
       code: 500,
       message: "Lỗi server khi gọi RapidAPI",
-      error: err.message
+      error: err.response?.data || err.message
     });
   }
 };
 
 export default handler;
+
