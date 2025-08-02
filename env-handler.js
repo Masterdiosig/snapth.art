@@ -12,13 +12,13 @@
   if (lang === 'vi') {
     document.querySelector('.subtitle')?.textContent = 'Không có logo – Không có watermark';
     document.querySelector('button[type="submit"]')?.innerHTML = '<i class="fa fa-download"></i> Tải về';
-    document.querySelector('input[type="text"]')?.placeholder = 'Dán link TikTok vào đây...';
+    document.querySelector('input[type="text"]')?.placeholder = 'Dán link vào đây...';
   } else if (lang === 'id') {
     // giữ nguyên vì mặc định trang đã là id
   } else if (lang === 'en') {
     document.querySelector('.subtitle')?.textContent = 'No logo – No watermark';
     document.querySelector('button[type="submit"]')?.innerHTML = '<i class="fa fa-download"></i> Download';
-    document.querySelector('input[type="text"]')?.placeholder = 'Paste TikTok link...';
+    document.querySelector('input[type="text"]')?.placeholder = 'Paste link...';
   }
 
   // Ẩn phần header-controls nếu đang trong app
