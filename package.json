@@ -1,7 +1,7 @@
 {
   "name": "snapth",
   "version": "1.0.0",
-  "description": "Snapth - Unduh Video TikTok Tanpa Watermark",
+  "description": "Snapth - Unduh Video Tanpa Watermark",
   "main": "server.js",
   "type": "module",
   "scripts": {
