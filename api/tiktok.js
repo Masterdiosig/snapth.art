@@ -70,6 +70,8 @@ const handler = async (req, res) => {
     const videoWM = data.wmplay;
     const audio = data.music;
 
+    console.log('📦 RapidAPI data:', response.data);
+
     if (!videoHD && !videoSD && !videoWM && !audio) {
       return res.status(200).json({
         code: 2,
@@ -93,7 +95,7 @@ const handler = async (req, res) => {
     });
   } catch (err) {
     console.error("❌ Lỗi chi tiết:", err.response?.status, err.response?.data, err.message);
-    
+
 console.log('🔒 Token env server:', process.env.API_SECRET_TOKEN);
 console.log('🔒 Token nhận được:', token);
 
