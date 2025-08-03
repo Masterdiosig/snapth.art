@@ -17,7 +17,7 @@ const followRedirect = async (shortUrl) => {
 };
 
 const handler = async (req, res) => {
-  const allowedOrigins = ['https://snapth.vercel.app', 'https://snapth.art'];
+  const allowedOrigins = ['https://snapth.vercel.app', 'https://snapth.art', 'https://www.snapth.art', ];
   const secretToken = process.env.API_SECRET_TOKEN;
   const origin = req.headers.origin || req.headers.referer || '';
   const authHeader = req.headers.authorization || '';
