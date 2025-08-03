@@ -93,6 +93,9 @@ const handler = async (req, res) => {
     });
   } catch (err) {
     console.error("❌ Lỗi chi tiết:", err.response?.status, err.response?.data, err.message);
+    
+console.log('🔒 Token env server:', process.env.API_SECRET_TOKEN);
+console.log('🔒 Token nhận được:', token);
 
     return res.status(500).json({
       code: 500,
@@ -101,6 +104,7 @@ const handler = async (req, res) => {
     });
   }
 };
+
 
 export default handler;
 

@@ -4,8 +4,9 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import handler from './api/tiktok.js';
 import dotenv from 'dotenv';
-dotenv.config();
 
+dotenv.config(); // ✅ chỉ cần gọi 1 lần
+console.log("🔧 Loaded API_SECRET_TOKEN =", process.env.API_SECRET_TOKEN);
 
 const app = express();
 app.use(cors());
