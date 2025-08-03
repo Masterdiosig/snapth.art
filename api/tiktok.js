@@ -92,7 +92,8 @@ const handler = async (req, res) => {
       }
     });
   } catch (err) {
-    console.error("❌ Lỗi gọi API:", err.response?.data || err.message);
+    console.error("❌ Lỗi chi tiết:", err.response?.status, err.response?.data, err.message);
+
     return res.status(500).json({
       code: 500,
       message: "Lỗi server khi gọi RapidAPI",
