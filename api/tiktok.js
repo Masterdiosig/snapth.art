@@ -17,7 +17,7 @@ const followRedirect = async (shortUrl) => {
 };
 
 const handler = async (req, res) => {
-  const allowedOrigins = ['https://snapth.vercel.app', 'https://snapth.art', 'https://www.snapth.art', ];
+  const allowedOrigins = ['https://snapth.vercel.app', 'https://snapth.art', 'https://www.snapth.art'];
   const secretToken = process.env.API_SECRET_TOKEN;
   const origin = req.headers.origin || req.headers.referer || '';
   const authHeader = req.headers.authorization || '';
@@ -69,50 +69,32 @@ const handler = async (req, res) => {
     const videoSD = data.play;
     const videoWM = data.wmplay;
     const audio = data.music;
+    const downloadUrl = data.downloadUrl;
 
-    console.log('📦 RapidAPI data:', response.data);
+    const list = [
+      ...(videoSD ? [{ url: videoSD, label: "Tải không watermark" }] : []),
+      ...(videoHD ? [{ url: videoHD, label: "Tải HD" }] : []),
+      ...(audio ? [{ url: audio, label: "Tải nhạc" }] : []),
+      ...(downloadUrl ? [{ url: downloadUrl, label: "Tải video (RapidAPI)" }] : [])
+    ];
 
-const downloadUrl = data.downloadUrl;
-
-if (!downloadUrl) {
-  return res.status(200).json({
-    code: 2,
-    message: "❌ Không lấy được video",
-    raw: data
-  });
-}
-
-return res.status(200).json({
-  code: 0,
-  data: [
-    { url: downloadUrl, label: "Tải video (RapidAPI)" }
-  ],
-  meta: {
-    thumbnail: data.cover,
-    description: data.description,
-    author: data.author?.nickname || data.author?.username || ''
-  }
-});
-
+    if (list.length === 0) {
+      return res.status(200).json({ code: 2, message: "❌ Không lấy được video", raw: data });
+    }
 
     return res.status(200).json({
       code: 0,
-      data: [
-        ...(videoSD ? [{ url: videoSD, label: "Tải không watermark" }] : []),
-        ...(videoHD ? [{ url: videoHD, label: "Tải HD" }] : []),
-        ...(audio ? [{ url: audio, label: "Tải nhạc" }] : [])
-      ],
+      data: list,
       meta: {
         thumbnail: data.cover,
-        description: data.title,
-        author: data.author?.nickname || data.author?.unique_id || ''
+        description: data.description || data.title,
+        author: data.author?.nickname || data.author?.username || data.author?.unique_id || ''
       }
     });
   } catch (err) {
     console.error("❌ Lỗi chi tiết:", err.response?.status, err.response?.data, err.message);
-
-console.log('🔒 Token env server:', process.env.API_SECRET_TOKEN);
-console.log('🔒 Token nhận được:', token);
+    console.log('🔒 Token env server:', process.env.API_SECRET_TOKEN);
+    console.log('🔒 Token nhận được:', token);
 
     return res.status(500).json({
       code: 500,
@@ -121,7 +103,6 @@ console.log('🔒 Token nhận được:', token);
     });
   }
 };
-
 
 export default handler;
 
