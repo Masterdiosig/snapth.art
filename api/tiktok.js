@@ -72,13 +72,28 @@ const handler = async (req, res) => {
 
     console.log('📦 RapidAPI data:', response.data);
 
-    if (!videoHD && !videoSD && !videoWM && !audio) {
-      return res.status(200).json({
-        code: 2,
-        message: "❌ Không lấy được video",
-        raw: data
-      });
-    }
+const downloadUrl = data.downloadUrl;
+
+if (!downloadUrl) {
+  return res.status(200).json({
+    code: 2,
+    message: "❌ Không lấy được video",
+    raw: data
+  });
+}
+
+return res.status(200).json({
+  code: 0,
+  data: [
+    { url: downloadUrl, label: "Tải video (RapidAPI)" }
+  ],
+  meta: {
+    thumbnail: data.cover,
+    description: data.description,
+    author: data.author?.nickname || data.author?.username || ''
+  }
+});
+
 
     return res.status(200).json({
       code: 0,
