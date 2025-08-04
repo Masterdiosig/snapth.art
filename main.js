@@ -1,3 +1,4 @@
+ // main.js
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector(".simple_form");
   const input = document.getElementById("hf_urli");
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  form.addEventListener("submit", async (e) => {
+ document.getElementById("submit").addEventListener("click", async (e) => {
   e.preventDefault();
 
   const tiktokUrl = input.value.trim();
@@ -38,11 +39,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const data = await res.json();
 
-    if (data.code === 0 && data.data.length > 0) {
-      window.open(data.data[0].url, '_blank');
-    } else {
-      showErrorInline("Error video or server.");
-    }
+  if (data.code === 0 && data.data.length > 0) {
+  const resultBox = document.getElementById("result");
+  resultBox.innerHTML = data.data.map(item =>
+    `<a href="${item.url}" target="_blank" style="display:block;margin-top:10px;color:#007bff">${item.label}</a>`
+  ).join("");
+} else {
+  showErrorInline("Không lấy được video.");
+}
+
   } catch (err) {
     console.error(err);
     showErrorInline("Error video or server.");

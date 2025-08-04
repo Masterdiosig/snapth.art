@@ -227,11 +227,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="container">
       <h1>Download Videos</h1>
       <p class="subtitle">Tidak ada logo – No watermark</p>
-      <form class="simple_form" name="formurl">
-        <input type="text" name="td_url" id="hf_urli" placeholder="Paste link here...">
-        <button type="submit" name="td_btn"><i class="fa fa-download"></i> Unduh</button>
+      <div class="simple_form">
+  <input type="text" id="hf_urli" placeholder="Paste link here..." />
+  <button id="submit"><i class="fa fa-download"></i> Unduh</button>
+<div id="result" style="text-align:center;margin-top:20px;"></div>
+
         <div id="error-inline">⚠️ <span id="error-inline-msg">Có lỗi xảy ra.</span></div>
-      </form>
+      </div>
     </div>
   </div>
 <script src="main.js"></script>
