@@ -56,59 +56,62 @@ const handler = async (req, res) => {
   console.log("🔗 Final TikTok URL:", finalUrl);
 
 
-  try {
- const response = await axios.get('https://tiktok-download-video1.p.rapidapi.com/newGetVideo', {
-  params: {
-    videoUrl: finalUrl,
-    hd: '1'
-  },
-  headers: {
-    'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-    'X-RapidAPI-Host': 'tiktok-download-video1.p.rapidapi.com'
-  }
-});
+ try {
+  const cleanedUrl = finalUrl.split('?')[0];  // ✅ thêm dòng này
 
-console.log("📦 RapidAPI trả về:", JSON.stringify(response.data, null, 2)); 
-    const data = response.data?.data || {};
-    console.log("📦 RapidAPI data:", JSON.stringify(data, null, 2));
-
-    const videoHD = data.hdplay;
-    const videoSD = data.play;
-    const videoWM = data.wmplay;
-    const audio = data.music;
-    const downloadUrl = data.downloadUrl;
-
-    const list = [
-      ...(videoSD ? [{ url: videoSD, label: "Tải không watermark" }] : []),
-      ...(videoHD ? [{ url: videoHD, label: "Tải HD" }] : []),
-      ...(audio ? [{ url: audio, label: "Tải nhạc" }] : []),
-      ...(downloadUrl ? [{ url: downloadUrl, label: "Tải video (RapidAPI)" }] : [])
-    ];
-
-    if (list.length === 0) {
-      return res.status(200).json({ code: 2, message: "❌ Không lấy được video", raw: data });
+  const response = await axios.get('https://tiktok-download-video1.p.rapidapi.com/newGetVideo', {
+    params: {
+      videoUrl: cleanedUrl,  // ✅ dùng URL đã clean
+      hd: '1'
+    },
+    headers: {
+      'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+      'X-RapidAPI-Host': 'tiktok-download-video1.p.rapidapi.com'
     }
+  });
 
-    return res.status(200).json({
-      code: 0,
-      data: list,
-      meta: {
-        thumbnail: data.cover,
-        description: data.description || data.title,
-        author: data.author?.nickname || data.author?.username || data.author?.unique_id || ''
-      }
-    });
-  } catch (err) {
-    console.error("❌ Lỗi chi tiết:", err.response?.status, err.response?.data, err.message);
-    console.log('🔒 Token env server:', process.env.API_SECRET_TOKEN);
-    console.log('🔒 Token nhận được:', token);
+  console.log("📦 RapidAPI trả về:", JSON.stringify(response.data, null, 2)); 
+  const data = response.data?.data || {};
+  console.log("📦 RapidAPI data:", JSON.stringify(data, null, 2));
 
-    return res.status(500).json({
-      code: 500,
-      message: "Lỗi server khi gọi RapidAPI",
-      error: err.response?.data || err.message
-    });
+  const videoHD = data.hdplay;
+  const videoSD = data.play;
+  const videoWM = data.wmplay;
+  const audio = data.music;
+  const downloadUrl = data.downloadUrl;
+
+  const list = [
+    ...(videoSD ? [{ url: videoSD, label: "Tải không watermark" }] : []),
+    ...(videoHD ? [{ url: videoHD, label: "Tải HD" }] : []),
+    ...(audio ? [{ url: audio, label: "Tải nhạc" }] : []),
+    ...(downloadUrl ? [{ url: downloadUrl, label: "Tải video (RapidAPI)" }] : [])
+  ];
+
+  if (list.length === 0) {
+    return res.status(200).json({ code: 2, message: "❌ Không lấy được video", raw: data });
   }
+
+  return res.status(200).json({
+    code: 0,
+    data: list,
+    meta: {
+      thumbnail: data.cover,
+      description: data.description || data.title,
+      author: data.author?.nickname || data.author?.username || data.author?.unique_id || ''
+    }
+  });
+} catch (err) {
+  console.error("❌ Lỗi chi tiết:", err.response?.status, err.response?.data, err.message);
+  console.log('🔒 Token env server:', process.env.API_SECRET_TOKEN);
+  console.log('🔒 Token nhận được:', token);
+
+  return res.status(500).json({
+    code: 500,
+    message: "Lỗi server khi gọi RapidAPI",
+    error: err.response?.data || err.message
+  });
+}
+
 };
 
 export default handler;
