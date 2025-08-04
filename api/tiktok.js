@@ -54,16 +54,17 @@ const handler = async (req, res) => {
 
   const finalUrl = await followRedirect(url);
   console.log("🔗 Final TikTok URL:", finalUrl);
+console.log("📦 RapidAPI trả về:", JSON.stringify(response.data, null, 2));
 
   try {
-    const response = await axios.get('https://tiktok-download-video1.p.rapidapi.com/newGetVideo', {
+    const response = await axios.get('https://tiktok-video-downloader-api.p.rapidapi.com/media', {
   params: {
     url: finalUrl,  // ✅ Sửa thành 'url'
     hd: '1'
   },
   headers: {
     'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
-    'X-RapidAPI-Host': 'tiktok-download-video1.p.rapidapi.com'
+    'X-RapidAPI-Host': 'tiktok-video-downloader-api.p.rapidapi.com'
   }
 });
 
