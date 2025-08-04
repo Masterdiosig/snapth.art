@@ -65,6 +65,8 @@ const handler = async (req, res) => {
     });
 
     const data = response.data?.data || {};
+    console.log("📦 RapidAPI data:", JSON.stringify(data, null, 2));
+
     const videoHD = data.hdplay;
     const videoSD = data.play;
     const videoWM = data.wmplay;
