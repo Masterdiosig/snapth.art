@@ -54,7 +54,7 @@ const handler = async (req, res) => {
 
   const finalUrl = await followRedirect(url);
   console.log("🔗 Final TikTok URL:", finalUrl);
-console.log("📦 RapidAPI trả về:", JSON.stringify(response.data, null, 2));
+
 
   try {
     const response = await axios.get('https://tiktok-video-downloader-api.p.rapidapi.com/media', {
@@ -68,6 +68,7 @@ console.log("📦 RapidAPI trả về:", JSON.stringify(response.data, null, 2))
   }
 });
 
+console.log("📦 RapidAPI trả về:", JSON.stringify(response.data, null, 2));
 
     const data = response.data?.data || {};
     console.log("📦 RapidAPI data:", JSON.stringify(data, null, 2));
