@@ -1,25 +1,19 @@
-const axios = require("axios");
-
 export default async function handler(req, res) {
   const { url } = req.query;
   if (!url) return res.status(400).send("Thiếu URL");
 
   try {
-    const response = await axios.get(url, {
-      responseType: "stream",
-      headers: {
-        "User-Agent": "Mozilla/5.0"
-      }
+    res.writeHead(302, {
+      Location: url,
+      'Content-Disposition': 'attachment; filename="video.mp4"'
     });
-
-    res.setHeader("Content-Disposition", 'attachment; filename="video.mp4"');
-    res.setHeader("Content-Type", response.headers["content-type"]);
-    response.data.pipe(res);
+    res.end();
   } catch (err) {
     console.error("Lỗi tải:", err.message);
     res.status(500).send("Không tải được video.");
   }
 }
+
 
 
 
