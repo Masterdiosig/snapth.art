@@ -54,11 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
 // ⚡ Hàm tải video đúng cách qua API download
 window.downloadFile = function (url) {
   const a = document.createElement('a');
-  a.href = '/api/download?url=' + url;
-  a.setAttribute('download', 'video.mp4');
+  a.href = '/api/download?url=' + encodeURIComponent(url);
+  a.setAttribute('download', '');
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
 };
+
 
   
