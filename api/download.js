@@ -10,23 +10,17 @@ export default async function handler(req, res) {
       return res.status(500).send('Không tải được video.');
     }
 
-    // Thiết lập headers để buộc trình duyệt tải file
+    const buffer = await response.arrayBuffer(); // Đọc toàn bộ video
+
     res.setHeader('Content-Disposition', 'attachment; filename="tiktok.mp4"');
     res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader('Content-Length', buffer.byteLength);
 
-    // Stream nội dung video từ TikTok về client
-    const reader = response.body.getReader();
-    const encoder = new TextEncoder();
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      res.write(value);
-    }
-    res.end();
+    res.status(200).send(Buffer.from(buffer)); // Gửi về trình duyệt
   } catch (err) {
     console.error('Lỗi tải video:', err);
     res.status(500).send('Lỗi server.');
   }
 }
+
 
