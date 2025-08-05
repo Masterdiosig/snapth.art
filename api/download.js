@@ -1,10 +1,7 @@
-// pages/api/download.js hoặc api/download/index.js
 export default async function handler(req, res) {
   const { url } = req.query;
 
-  if (!url) {
-    return res.status(400).send('Thiếu URL tải');
-  }
+  if (!url) return res.status(400).send('Thiếu URL tải');
 
   try {
     const response = await fetch(decodeURIComponent(url));
@@ -13,14 +10,23 @@ export default async function handler(req, res) {
       return res.status(500).send('Không tải được video.');
     }
 
-    // Forward headers để trình duyệt hiểu là file tải
-    res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');
+    // Thiết lập headers để buộc trình duyệt tải file
+    res.setHeader('Content-Disposition', 'attachment; filename="tiktok.mp4"');
     res.setHeader('Content-Type', 'video/mp4');
 
-    // Stream video về client
-    response.body.pipe(res);
-  } catch (error) {
-    console.error('Lỗi tải video:', error);
-    res.status(500).send('Lỗi tải video.');
+    // Stream nội dung video từ TikTok về client
+    const reader = response.body.getReader();
+    const encoder = new TextEncoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      res.write(value);
+    }
+    res.end();
+  } catch (err) {
+    console.error('Lỗi tải video:', err);
+    res.status(500).send('Lỗi server.');
   }
 }
+
