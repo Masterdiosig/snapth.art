@@ -37,20 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.code === 0 && data.data.length > 0) {
-     const links = data.data.map(item => {
-  return `<button style="display:block;margin:10px 0;color:#007bff;font-weight:bold;text-decoration:underline;cursor:pointer;" onclick="downloadFile('${encodeURIComponent(item.url)}')">${item.label}</button>`;
-}).join('');
-
-window.downloadFile = function (url) {
-  const a = document.createElement('a');
-  a.href = '/api/download?url=' + url;
-  a.setAttribute('download', 'video.mp4');
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-};
-
-
+        const links = data.data.map(item => {
+          return `<button style="display:block;margin:10px 0;color:#007bff;font-weight:bold;text-decoration:underline;cursor:pointer;" onclick="downloadFile('${encodeURIComponent(item.url)}')">${item.label}</button>`;
+        }).join('');
         resultBox.innerHTML = links;
       } else {
         showErrorInline("Không lấy được video.");
@@ -61,4 +50,15 @@ window.downloadFile = function (url) {
     }
   });
 });
+
+// ⚡ Hàm tải video đúng cách qua API download
+window.downloadFile = function (url) {
+  const a = document.createElement('a');
+  a.href = '/api/download?url=' + url;
+  a.setAttribute('download', 'video.mp4');
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
   
