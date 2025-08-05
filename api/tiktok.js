@@ -57,10 +57,11 @@ const handler = async (req, res) => {
 
   try {
     const response = await axios.get('https://tiktok-download-video1.p.rapidapi.com/newGetVideo', {
-      params: {
-        videoUrl: finalUrl,
-        hd: '1'
-      },
+   params: {
+  url: finalUrl,
+  hd: '1'
+},
+
       headers: {
         'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
         'X-RapidAPI-Host': 'tiktok-download-video1.p.rapidapi.com'
