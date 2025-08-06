@@ -36,7 +36,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-     if (data.code === 0 && data.data.length > 0) {
+      if (data.code === 0 && data.data.length > 0) {
+        const links = data.data.map(item =>
+          `<a href="${item.url}" target="_blank" style="display:block;margin:10px 0;color:#007bff;font-weight:bold;text-decoration:underline;">${item.label}</a>`
+        ).join('');
+        resultBox.innerHTML = links;
+      } else {
+        showErrorInline("Không lấy được video.");
+      }
+
+if (data.code === 0 && data.data.length > 0) {
   const links = data.data.map(item => {
     const a = document.createElement("a");
     a.href = item.url;
@@ -50,6 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
 } else {
   showErrorInline("Không lấy được video.");
 }
+
+
 
     } catch (err) {
       console.error(err);
