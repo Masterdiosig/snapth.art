@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
           
           `<a href="${item.url}" target="_blank" style="display:block;margin:10px 0;color:#007bff;font-weight:bold;text-decoration:underline;">${item.label}</a>`
         ).join('');
-        a.setAttribute("download", ""); // hỗ trợ Safari
+        
         resultBox.innerHTML = links;
       } else {
         showErrorInline("Không lấy được video.");
