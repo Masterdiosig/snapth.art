@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const tiktokUrl = input.value.trim();
 
-    resultBox.innerHTML = ''; // reset kết quả cũ
-
     if (!tiktokUrl) {
       showErrorInline("Paste valid link!");
       input.focus();
@@ -37,17 +35,40 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await res.json();
 
       if (data.code === 0 && data.data.length > 0) {
-        const links = data.data.map(item =>
-       <a href="/api/download?url=${encodeURIComponent(item.url)}" download style="display:block;margin:10px 0;color:#007bff;font-weight:bold;text-decoration:underline;">${item.label}</a>
+        resultBox.innerHTML = ''; // clear cũ
 
-        ).join('');
-        resultBox.innerHTML = links;
+        for (const item of data.data) {
+          const btn = document.createElement("button");
+          btn.textContent = item.label;
+          btn.style = "display:block;margin:10px 0;padding:10px;background:#007bff;color:#fff;border:none;border-radius:6px;cursor:pointer;";
+
+          btn.onclick = async () => {
+            try {
+              const response = await fetch(`/api/download?url=${encodeURIComponent(item.url)}`);
+              const blob = await response.blob();
+
+              const a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = "video.mp4"; // có thể dùng item.label nếu muốn tên riêng
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            } catch (err) {
+              console.error("Lỗi tải video:", err);
+              showErrorInline("Không tải được video.");
+            }
+          };
+
+          resultBox.appendChild(btn);
+        }
       } else {
-        showErrorInline("Không lấy được video.");
+        showErrorInline("Không tìm thấy video phù hợp!");
       }
-    } catch (err) {
-      console.error(err);
-      showErrorInline("Lỗi máy chủ hoặc kết nối.");
+
+    } catch (error) {
+      console.error("Lỗi gọi API TikTok:", error);
+      showErrorInline("Lỗi kết nối tới máy chủ!");
     }
   });
 });
+
