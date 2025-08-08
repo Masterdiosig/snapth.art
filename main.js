@@ -36,20 +36,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const data = await res.json();
 
-      if (data.code === 0 && data.data.length > 0) {
-        const links = data.data.map(item => {
-          const a = document.createElement("a");
-          a.href = item.url;
-          a.textContent = item.label;
-          a.className = "download-link";
-          a.setAttribute("download", "");
-          a.target = "_blank";
-          return a.outerHTML;
-        }).join('');
-        resultBox.innerHTML = links;
-      } else {
-        showErrorInline("Không lấy được video.");
-      }
+if (data.code === 0 && data.data.length > 0) {
+  const links = data.data.map(item => {
+    const a = document.createElement("a");
+    a.href = item.url;
+    a.textContent = item.label;
+    a.className = "download-link";
+    a.setAttribute("download", ""); // hỗ trợ Safari
+    a.target = "_blank"; // nếu muốn mở tab mới (tùy chọn)
+    return a.outerHTML;
+  }).join('');
+  resultBox.innerHTML = links;
+} else {
+  showErrorInline("Không lấy được video.");
+}
     } catch (err) {
       console.error(err);
       showErrorInline("Lỗi máy chủ hoặc kết nối.");
