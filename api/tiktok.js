@@ -56,7 +56,7 @@ const handler = async (req, res) => {
   console.log("🔗 Final TikTok URL:", finalUrl);
 
   try {
-    const response = await axios.get('https://tiktok-video-downloader-api.p.rapidapi.com/mediao', {
+    const response = await axios.get('https://tiktok-video-downloader-api.p.rapidapi.com/media', {
    params: {
   url: finalUrl,
   hd: '1'
