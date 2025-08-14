@@ -12,6 +12,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-K7RV94VR');</script>
 <!-- End Google Tag Manager -->
+
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6805310432922514"
      crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -183,40 +184,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   gtag('config', 'AW-727607871');
 
-
-
-
 </script>
 </head>
 
 <!-- InMobi -->
-<div id="inmobi_ad" style="width:320px; height:50px; margin:auto;"></div>
-
-<script>
-  window.onload = function () {
-    // Kiểm tra SDK đã load chưa
-    if (typeof window.inmobi === 'undefined') {
-      console.error('InMobi SDK chưa load.');
-      return;
-    }
-
-    // Yêu cầu quảng cáo từ InMobi
-    window.inmobi.getAd({
-      zoneid: "10000454921",    // Placement ID
-      websiteid: "10000080649", // Website Key
-      adtype: "banner",         // Loại quảng cáo
-      width: 320,               // Rộng (px)
-      height: 50                // Cao (px)
-    }, function (adHtml) {
-      // Chèn quảng cáo vào div
-      document.getElementById('inmobi_ad').innerHTML = adHtml;
-    });
-  };
-</script>
-<!-- Monetag -->
 <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try
 {(document.body||document.documentElement).appendChild(s)}
 catch(e){}})('groleegni.net',9715033,document.createElement('script'))</script>
+
 
 <body>
   <header class="custom-header">
@@ -442,6 +417,29 @@ nor does it require you to provide any personal information. You just need to pr
       <p style="font-size: 12px; color: #888;">
   This site is not affiliated with or endorsed by TikTok. TikTok is a registered trademark of ByteDance Ltd. All video rights belong to their respective owners.
 </p>
+<div id="inmobi_ad" style="width:320px; height:50px; margin:auto;"></div>
+
+<script>
+  window.onload = function () {
+    // Kiểm tra SDK đã load chưa
+    if (typeof window.inmobi === 'undefined') {
+      console.error('InMobi SDK chưa load.');
+      return;
+    }
+
+    // Yêu cầu quảng cáo từ InMobi
+    window.inmobi.getAd({
+      zoneid: "10000454921",    // Placement ID
+      websiteid: "10000080649", // Website Key
+      adtype: "banner",         // Loại quảng cáo
+      width: 320,               // Rộng (px)
+      height: 50                // Cao (px)
+    }, function (adHtml) {
+      // Chèn quảng cáo vào div
+      document.getElementById('inmobi_ad').innerHTML = adHtml;
+    });
+  };
+</script>
 
       <ul class="footer-menu">
         <li><a href="privacy.html">Privacy</a></li>
