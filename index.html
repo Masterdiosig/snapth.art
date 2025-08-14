@@ -16,6 +16,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
      crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+<script async src="https://cf.cdn.inmobi.com/ad/inmobi.js"></script>
+
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-85J4HHQCLT"></script>
@@ -180,9 +182,39 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   gtag('js', new Date());
 
   gtag('config', 'AW-727607871');
+
+
+
+
+</script>
+</head>
+
+<!-- InMobi -->
+<div id="inmobi_ad" style="width:320px; height:50px; margin:auto;"></div>
+
+<script>
+  window.onload = function () {
+    // Kiểm tra SDK đã load chưa
+    if (typeof window.inmobi === 'undefined') {
+      console.error('InMobi SDK chưa load.');
+      return;
+    }
+
+    // Yêu cầu quảng cáo từ InMobi
+    window.inmobi.getAd({
+      zoneid: "10000454921",    // Placement ID
+      websiteid: "10000080649", // Website Key
+      adtype: "banner",         // Loại quảng cáo
+      width: 320,               // Rộng (px)
+      height: 50                // Cao (px)
+    }, function (adHtml) {
+      // Chèn quảng cáo vào div
+      document.getElementById('inmobi_ad').innerHTML = adHtml;
+    });
+  };
 </script>
 
-</head>
+
 
 <body>
   <header class="custom-header">
