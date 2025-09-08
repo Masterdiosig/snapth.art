@@ -1,0 +1,135 @@
+* {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      background: linear-gradient(-45deg, #a18cd1, #fbc2eb, #fad0c4, #ffd1ff);
+      background-size: 300% 300%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 20px;
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      border-radius: 0 0 12px 12px;
+    }
+    nav a {
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: 500;
+      color: white;
+      transition: 0.3s;
+    }
+    nav a:hover { color: #ffe066; }
+    .logo-svg { height: 50px; width: auto; display: block; }
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .content h1 {
+      font-size: 2rem;
+      margin-bottom: 25px;
+      background: linear-gradient(270deg, #ff6ec4, #7873f5, #4ade80, #facc15);
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: logoGradient 8s ease infinite;
+    }
+    @keyframes logoGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .download-form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255,255,255,0.15);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      backdrop-filter: blur(8px);
+    }
+    .download-form input {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 15px;
+    }
+    .download-form button {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff6ec4, #7873f5, #4ade80);
+      background-size: 200% 200%;
+      color: white;
+      transition: 0.3s;
+      animation: btnGradient 5s ease infinite;
+    }
+    .download-form button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    @keyframes btnGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .result {
+      margin-top: 25px;
+      background: rgba(255,255,255,0.2);
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+      max-width: 500px;
+      width: 100%;
+      display: none;
+    }
+    .result video {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+    .download-btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #4ade80, #22d3ee);
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .download-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    footer {
+      text-align: center;
+      padding: 12px;
+      font-size: 0.9rem;
+      background: rgba(0,0,0,0.25);
+      border-radius: 12px 12px 0 0;
+    }
